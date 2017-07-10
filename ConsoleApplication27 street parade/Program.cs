@@ -48,8 +48,8 @@ namespace ConsoleApplication27_street_parade
         static void Main(string[] args)
         {
 
-            int[] carsInMainStreet = new int[] { 4, 3, 1 };
-            int[] carsInAlley = new int[] { 5, 2 };
+            int[] carsInMainStreet = new int[] { 5, 6, 2, 1};
+            int[] carsInAlley = new int[] { 4, 3 };
             int[] carsInGarage = new int[] { };
             Stack<int> mainStreet = new Stack<int>(carsInMainStreet);
             Stack<int> alley = new Stack<int>(carsInAlley);
@@ -58,6 +58,7 @@ namespace ConsoleApplication27_street_parade
 
             bool continueLoop;
             int garageAwaits = 1;
+
             do
             {
                 continueLoop = false;
