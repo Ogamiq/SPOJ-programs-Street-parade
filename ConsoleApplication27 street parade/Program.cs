@@ -43,33 +43,60 @@ namespace ConsoleApplication27_street_parade
             return streamingHappened;
        
         }
+        static bool pushFromMainRoadtoAlley(Stack<int> mainStreet, Stack<int> alley)
+        {
+            /* pushes one car form main road to alley
+             * if a car with a value higher than the value of the car at the top of the alley enters a value,
+             * it returns the info that this street parade can be sorted
+             * */
+            int currentValue;
+            bool canBeSorted = true;
+            int valueAtTheTopOfAlley = int.MaxValue;
+            if(mainStreet.Count > 0)
+            {
+
+                if (alley.Count > 0)
+                    valueAtTheTopOfAlley = alley.Peek();
+                currentValue = mainStreet.Pop();
+                if (currentValue > valueAtTheTopOfAlley)
+                    canBeSorted = false;
+                alley.Push(currentValue);
+            }
+            return canBeSorted;
+        }
 
 
         static void Main(string[] args)
         {
 
-            int[] carsInMainStreet = new int[] { 5, 6, 2, 1};
-            int[] carsInAlley = new int[] { 4, 3 };
+            int[] carsInMainStreet = new int[] { 3, 2, 1, 7, 6};
+            int[] carsInAlley = new int[] { };
             int[] carsInGarage = new int[] { };
             Stack<int> mainStreet = new Stack<int>(carsInMainStreet);
             Stack<int> alley = new Stack<int>(carsInAlley);
             Stack<int> garage = new Stack<int>(carsInGarage);
+            int N = mainStreet.Count + alley.Count + garage.Count;
 
-
-            bool continueLoop;
+            bool continueInnerLoop;
             int garageAwaits = 1;
-
+            bool canBeSorted = true;
             do
             {
-                continueLoop = false;
-                if (streamToGarage(mainStreet, garage, ref garageAwaits))
-                    continueLoop = true;
-                if (streamToGarage(alley, garage, ref garageAwaits))
-                    continueLoop = true;
-            } while (continueLoop);
-
-            displayStackAndWait(garage);        
-            
+                do
+                {
+                    continueInnerLoop = false;
+                    if (streamToGarage(mainStreet, garage, ref garageAwaits))
+                        continueInnerLoop = true;
+                    if (streamToGarage(alley, garage, ref garageAwaits))
+                        continueInnerLoop = true;
+                } while (continueInnerLoop);
+                canBeSorted = pushFromMainRoadtoAlley(mainStreet, alley);
+                if (!canBeSorted)
+                    Console.WriteLine("no");
+                if (garage.Count == N)
+                    Console.WriteLine("yes");
+            } while (garage.Count != N && canBeSorted);
+            displayStackAndWait(garage);       
         }
     }
 }
